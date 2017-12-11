@@ -28,7 +28,7 @@ for BUILDPACK in $(cat $1/.buildpacks); do
 
     if [[ "$url" =~ \.tgz$ ]]; then
       mkdir -p "$dir"
-      curl -s "$url" | tar xvz -C "$dir" >/dev/null 2>&1
+      curl --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 60 -s "$url" | tar xvz -C "$dir" >/dev/null 2>&1
     else
       git clone $url $dir >/dev/null 2>&1
       if [ -f "$dir/.gitmodules" ]; then
